@@ -1,0 +1,50 @@
+.filterSideBar_container{
+    background-color: #f0f0fc;
+    border-radius: 10px;
+    position: fixed;
+    left: 0;
+    padding: 1rem;
+    text-align: center;
+    top: 30%;
+    width: 14rem;
+}
+
+div h2{
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #224957;
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+form{
+    margin-top: 1.3rem;
+}
+
+.price_range{
+    /* background-color: #7064e5; */
+    border-radius: 4px;
+    cursor: pointer;
+    height: 6px;
+    transform: scale(1);
+    width: 90%;
+    color: -internal-light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
+    /* padding: initial;
+    margin: initial;
+    border: initial; */
+}
+
+.filterSideBar_categoryContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+input[type='checkbox']{
+    border-radius: 0.25rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    width: 1rem;
+}
