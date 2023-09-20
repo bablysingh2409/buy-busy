@@ -1,12 +1,15 @@
-import React from 'react';
+import { useState } from 'react';
 import style from './ProductCard.module.css';
+import plusImg from '../../Images/plus.png';
+import minusImg from '../../Images/minus.png';
 
-function ProductCard({ title, price, description, thumbnail }) {
+function ProductCard({ title, price, description, thumbnail, images }) {
+  const [cart, setCart] = useState(false);
   return (
     <>
       <div className={style.product_container}>
         <div className={style.product_imgContainer}>
-          <img src={thumbnail} />
+          <img src={images} alt="product-img" />
         </div>
         <div className={style.product_details}>
           <div className={style.product_details_productName}>
@@ -15,8 +18,21 @@ function ProductCard({ title, price, description, thumbnail }) {
           </div>
           <div className={style.product_details_price}>
             <p>₹{price}</p>
+            {cart ? (
+              <div className={style.product_details_quantityContainer}>
+                <img src={minusImg} alt="minus" />
+                1
+                <img src={plusImg} alt="plus" />
+              </div>
+            ) : null}
           </div>
-          <button className={style.product_details_addBtn}>Add To Cart</button>
+          {!cart ? (
+            <button className={style.product_details_addBtn} onClick={() => console.log('hello')}>
+              Add To Cart
+            </button>
+          ) : (
+            <button className={style.product_details_removeBtn}> Remove From Cart</button>
+          )}
         </div>
       </div>
     </>

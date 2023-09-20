@@ -1,0 +1,44 @@
+.product_container_grid{
+    
+    display: grid;
+    grid-gap: 2rem;
+    gap: 2rem;
+    grid-template-columns: repeat(3,1fr);
+    margin: 3rem 15rem;
+}
+.cartPage_totalPrice{
+   display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    justify-content: flex-start;
+    gap: 1rem;
+    position: fixed;
+    left: 0.5rem;
+    top: 30%;
+    margin-right: 2rem;
+    padding: 1.5rem;
+}
+
+.cartPage_totalPrice p{
+    color: #224957;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.cartPage_purchaseBtn{
+    width: 90%;
+    height: 40px;
+    background-color: #7064e5;
+    border: 1px solid #7064e5;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 20px;
+    margin: auto;
+    transition: all .3s ease-in-out;
+}
+.cartPage_purchaseBtn:hover{
+    background-color: white;
+    color: #7064e5;
+}
