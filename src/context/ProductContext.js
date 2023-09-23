@@ -1,9 +1,8 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { data } from '../data';
 import { db } from '../config/firebase';
-import { collection, addDoc, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, getDocs, updateDoc, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { useAuthValue } from './authContext';
-import { useNavigate } from 'react-router-dom';
 
 export const productContext = createContext();
 
@@ -43,7 +42,6 @@ function CustomProductContext({ children }) {
 
   //reading product data from firestore
   useEffect(() => {
-    console.log(1);
     const getProductList = async () => {
       try {
         const snapShotData = await getDocs(productCollectionRef);
@@ -78,14 +76,53 @@ function CustomProductContext({ children }) {
 
   useEffect(() => {
     getCartData();
-  }, [loginUser, loading]);
+  }, [loginUser]);
+
+  //deleting the document of the login user
+  const deleteCartItem = async (cart) => {
+    try {
+      const cartDoc = doc(cartCollectionRef, cart.id);
+      await deleteDoc(cartDoc);
+      getCartData();
+    } catch (err) {
+      console.log('error occured during deleting the cart item..', err);
+    }
+  };
+
+  //undate the login user cart
+  const updateTheCartProduct = async (cart, plusOrMinus) => {
+    try {
+      const cartDoc = doc(cartCollectionRef, cart.id);
+      const cartData = (await getDoc(cartDoc)).data();
+      let newQty;
+      if (plusOrMinus == 'plus') {
+        newQty = cartData.qty + 1;
+      } else {
+        newQty = cartData.qty - 1;
+        if (newQty <= 0) {
+          newQty = 1;
+          deleteCartItem(cart);
+          return;
+        }
+      }
+      await updateDoc(cartDoc, { qty: newQty });
+      getCartData();
+    } catch (err) {
+      console.log('error occured during updating the cart...', err);
+    }
+  };
 
   //adding product to login user cart
   const addToCart = async (product) => {
     if (!loginUser) return;
+    const idx = cart.findIndex((item) => item.title === product.title);
+    if (idx != -1) {
+      updateTheCartProduct(cart[idx]);
+      return;
+    }
     try {
-      await addDoc(cartCollectionRef, { ...product, qyt: 1 });
-      setLoading(true);
+      await addDoc(cartCollectionRef, { ...product, qty: 1 });
+      getCartData();
     } catch (err) {
       console.log('error comes in add to cart', err);
     }
@@ -96,7 +133,9 @@ function CustomProductContext({ children }) {
   }
 
   return (
-    <productContext.Provider value={{ products, addToCart, cart }}>
+    <productContext.Provider
+      value={{ products, addToCart, cart, updateTheCartProduct, deleteCartItem }}
+    >
       {children}
     </productContext.Provider>
   );
