@@ -1,38 +1,36 @@
-import { useState } from 'react';
 import style from './ProductCard.module.css';
-import plusImg from '../../Images/plus.png';
-import minusImg from '../../Images/minus.png';
+import { useProductValue } from '../../context/ProductContext';
+import { useNavigate } from 'react-router-dom';
+import { useAuthValue } from '../../context/authContext';
 
-function ProductCard({ title, price, description, thumbnail, images }) {
-  const [cart, setCart] = useState(false);
+function ProductCard({ product }) {
+  const { addToCart } = useProductValue();
+  const { loginUser } = useAuthValue();
+  const navigate = useNavigate();
   return (
     <>
       <div className={style.product_container}>
         <div className={style.product_imgContainer}>
-          <img src={images} alt="product-img" />
+          <img src={product.images[0]} alt="product-img" />
         </div>
         <div className={style.product_details}>
           <div className={style.product_details_productName}>
-            <h3> {title}</h3>
-            <p>{description}</p>
+            <h3> {product.title}</h3>
+            <p>{product.description}</p>
           </div>
           <div className={style.product_details_price}>
-            <p>₹{price}</p>
-            {cart ? (
-              <div className={style.product_details_quantityContainer}>
-                <img src={minusImg} alt="minus" />
-                1
-                <img src={plusImg} alt="plus" />
-              </div>
-            ) : null}
+            <p>₹{product.price}</p>
           </div>
-          {!cart ? (
-            <button className={style.product_details_addBtn} onClick={() => console.log('hello')}>
-              Add To Cart
-            </button>
-          ) : (
-            <button className={style.product_details_removeBtn}> Remove From Cart</button>
-          )}
+
+          <button
+            className={style.product_details_addBtn}
+            onClick={() => {
+              if (!loginUser) navigate('/login');
+              addToCart(product, product.id);
+            }}
+          >
+            Add To Cart
+          </button>
         </div>
       </div>
     </>
