@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import style from './Nav.module.css';
 import { Outlet, NavLink, Link } from 'react-router-dom';
 import homeImg from '../../Images/house.png';
@@ -6,9 +5,11 @@ import orderImg from '../../Images/order.png';
 import cartImg from '../../Images/trolley.png';
 import logoutImg from '../../Images/logout.png';
 import loginImg from '../../Images/login.png';
+import { useAuthValue } from '../../context/authContext';
 
 function Nav() {
-  const [islogin, setIsLogin] = useState(false);
+  const { loginUser, logOut } = useAuthValue();
+
   return (
     <>
       <header>
@@ -26,7 +27,7 @@ function Nav() {
                   Home
                 </Link>
               </li>
-              {!islogin ? (
+              {loginUser ? (
                 <>
                   <li className={style.nav_item}>
                     <Link to="/myorders" className={style.nav_links}>
@@ -45,7 +46,7 @@ function Nav() {
                     </Link>
                   </li>
                   <li className={style.nav_item}>
-                    <Link to="/" className={style.nav_links}>
+                    <Link to="/" className={style.nav_links} onClick={logOut}>
                       <span>
                         <img src={logoutImg} alt="logout-img" className={style.icon_styles} />
                       </span>
