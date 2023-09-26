@@ -3,6 +3,8 @@ import { data } from '../data';
 import { db } from '../config/firebase';
 import { collection, addDoc, getDocs, updateDoc, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { useAuthValue } from './authContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const productContext = createContext();
 
@@ -25,9 +27,6 @@ function CustomProductContext({ children }) {
   const userOrderCollectionRef = loginUser
     ? collection(db, `/userOrders/${loginUser}/orders`)
     : null;
-
-  // console.log(loginUser);
-  // console.log('cart----', cart);
 
   //adding product data to firestrore only first tym during initila render
   useEffect(() => {
@@ -55,7 +54,6 @@ function CustomProductContext({ children }) {
           id: doc.id,
         }));
         setProducts([...data]);
-        // console.log(data);
       } catch (err) {
         console.log('error found--', err);
       }
@@ -73,6 +71,9 @@ function CustomProductContext({ children }) {
       let price = 0;
       const snapShot = await getDocs(cartCollectionRef);
       const cartsnap = snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      if (cartsnap.length === 0) {
+        toast('cart is empty');
+      }
       cartsnap.forEach((item) => (price += item.price * item.qty));
       setCart([...cartsnap]);
       setTotalPrice(price);
@@ -89,12 +90,9 @@ function CustomProductContext({ children }) {
         setLoading(false);
         return;
       }
-      // let price = 0;
       const snapShot = await getDocs(userOrderCollectionRef);
-      const orderSnap = snapShot.docs.map((doc) => ({ ...doc.data() }));
-      // cartsnap.forEach((item) => (price += item.price * item.qty));
+      const orderSnap = snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setuserOrder([...orderSnap]);
-      // setTotalPrice(price);
       setLoading(false);
     } catch (err) {
       console.log('error in reading user order data', err);
@@ -112,6 +110,7 @@ function CustomProductContext({ children }) {
       const cartDoc = doc(cartCollectionRef, cart.id);
       await deleteDoc(cartDoc);
       getCartData();
+      toast('Product Remove Successfully');
     } catch (err) {
       console.log('error occured during deleting the cart item..', err);
     }
@@ -150,6 +149,7 @@ function CustomProductContext({ children }) {
     }
     try {
       await addDoc(cartCollectionRef, { ...product, qty: 1 });
+      toast('Product Added Successfully');
       getCartData();
     } catch (err) {
       console.log('error comes in add to cart', err);
@@ -164,9 +164,10 @@ function CustomProductContext({ children }) {
       });
 
       getCartData();
-      console.log('All cart items deleted successfully.');
+      // console.log('All cart items deleted successfully.');
     } catch (err) {
-      console.log('Error occurred during bulk delete of cart items:', err);
+      toast(err.code);
+      // console.log('Error occurred during bulk delete of cart items:', err);
     }
   };
 
@@ -217,6 +218,7 @@ function CustomProductContext({ children }) {
       }}
     >
       {children}
+      <ToastContainer />
     </productContext.Provider>
   );
 }
