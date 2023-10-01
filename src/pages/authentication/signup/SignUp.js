@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './SignUp.module.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export function SignUp() {
   const navigate = useNavigate();
@@ -13,8 +14,13 @@ export function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    await createUserWithEmailAndPassword(auth, email, password);
-    navigate('/login');
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast('signup successfully');
+      navigate('/login');
+    } catch (error) {
+      toast(error.code);
+    }
   };
 
   return (

@@ -52,21 +52,6 @@
     margin: 0;
 }
 
-/* .product_details_addBtn{
-    color: #fff;
-    font-size: 20px;
-    padding: 0.75rem 0;
-    transition: all .3s ease-in-out;
-    width: 100%;
-    background-color: #7064e5;
-    border: 1px solid #7064e5;
-    border-radius: 6px;
-} */
-/* .product_details_addBtn:hover{
-  background-color: white;
-  color: #7064e5;
-} */
-
 .product_details_quantityContainer{
     display: flex;
     align-items: center;

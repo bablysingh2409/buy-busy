@@ -1,8 +1,6 @@
 import style from './UserOrder.module.css';
 
 function UserOrder({ orderHistory }) {
-  //   console.log(orderHistory);
-
   return (
     <div className={style.order_container}>
       <h2>Ordered On:- {orderHistory.date}</h2>

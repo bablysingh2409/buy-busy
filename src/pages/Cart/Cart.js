@@ -1,20 +1,19 @@
-import React from 'react';
+// import React from 'react';
 import style from './Cart.module.css';
-// import { data } from '../../data';
-// import ProductCard from '../../components/productCard/ProductCard';
 import { useProductValue } from '../../context/ProductContext';
 import CartCard from '../../components/cartCard/CartCard';
 import { useNavigate } from 'react-router-dom';
+// import { toast } from 'react-toastify/dist/components';
+// import { ToastContainer, toast } from 'react-toastify';
 
 function Cart() {
   const { cart, totalPrice, addUserOrderHistory } = useProductValue();
-  // console.log(4);
+
   const navigate = useNavigate();
   if (!cart.length) {
     return <h1>Cart is empty!</h1>;
   }
 
-  // console.log(cart);
   return (
     <div className={style.cartPage_cartContainer}>
       <aside className={style.cartPage_totalPrice}>

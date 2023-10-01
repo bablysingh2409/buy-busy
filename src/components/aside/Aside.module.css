@@ -22,16 +22,14 @@ form{
 }
 
 .price_range{
-    /* background-color: #7064e5; */
+   
     border-radius: 4px;
     cursor: pointer;
     height: 6px;
     transform: scale(1);
     width: 90%;
     color: -internal-light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
-    /* padding: initial;
-    margin: initial;
-    border: initial; */
+    
 }
 
 .filterSideBar_categoryContainer{

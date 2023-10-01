@@ -2,7 +2,6 @@ import style from './CartCart.module.css';
 import plusImg from '../../Images/plus.png';
 import minusImg from '../../Images/minus.png';
 import { useProductValue } from '../../context/ProductContext';
-import { useNavigate } from 'react-router-dom';
 
 function ProductCard({ cart }) {
   const { updateTheCartProduct, deleteCartItem } = useProductValue();
